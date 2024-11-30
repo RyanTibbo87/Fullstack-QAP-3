@@ -98,8 +98,19 @@ app.get("/", (request, response) => {
 });
 
 // GET /landing - Shows a welcome page for users, shows the names of all users if an admin
-app.get("/landing", (request, response) => {});
+app.get("/landing", (request, response) => {
+  const user = request.session.user;
 
+  if (!user) {
+    return response.redirect("/login");
+  }
+
+  if (user.role === "admin") {
+    return response.render("landing", { user, users: USERS });
+  }
+
+  response.render("landing", { user, users: null });
+});
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
