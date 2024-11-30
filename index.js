@@ -64,7 +64,7 @@ app.post("/login", async (request, response) => {
 
 // GET /signup - Render signup form
 app.get("/signup", (request, response) => {
-  response.render("signup", { error: null });
+  response.render("signup", { errorMessage: null });
 });
 
 // POST /signup - Allows a user to signup
