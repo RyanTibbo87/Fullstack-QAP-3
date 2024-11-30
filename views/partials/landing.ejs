@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Landing</title>
+  </head>
+  <body>
+    <h1>Welcome, <%= user.username %>!</h1>
+    <% if (user.role === "admin") { %>
+    <h2>Registered Users:</h2>
+    <ul>
+      <% users.forEach((u) => { %>
+      <li><%= u.username %> - <%= u.role %></li>
+      <% }); %>
+    </ul>
+    <% } %>
+    <form action="/logout" method="post">
+      <button type="submit">Logout</button>
+    </form>
+  </body>
+</html>
