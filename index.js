@@ -71,9 +71,17 @@ app.get("/signup", (request, response) => {
 app.post("/signup", async (request, response) => {
   const { username, email, password } = request.body;
 
-  // Check if the email is already in use
+  // Check if the email or username is already taken
   if (USERS.some((u) => u.email === email)) {
-    return response.render("signup", { error: "Email already registered" });
+    return response.render("signup", {
+      errorMessage: "Email is already registered.",
+    });
+  }
+
+  if (USERS.some((u) => u.username === username)) {
+    return response.render("signup", {
+      errorMessage: "Username is already taken.",
+    });
   }
 
   // Hash password and add new user
