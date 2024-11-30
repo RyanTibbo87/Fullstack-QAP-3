@@ -64,11 +64,30 @@ app.post("/login", async (request, response) => {
 
 // GET /signup - Render signup form
 app.get("/signup", (request, response) => {
-  response.render("signup");
+  response.render("signup", { error: null });
 });
 
 // POST /signup - Allows a user to signup
-app.post("/signup", (request, response) => {});
+app.post("/signup", async (request, response) => {
+  const { username, email, password } = request.body;
+
+  // Check if the email is already in use
+  if (USERS.some((u) => u.email === email)) {
+    return response.render("signup", { error: "Email already registered" });
+  }
+
+  // Hash password and add new user
+  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
+  USERS.push({
+    id: USERS.length + 1,
+    username,
+    email,
+    password: hashedPassword,
+    role: "user", // Default role
+  });
+
+  response.redirect("/login");
+});
 
 // GET / - Render index page or redirect to landing if logged in
 app.get("/", (request, response) => {
